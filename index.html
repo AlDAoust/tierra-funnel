@@ -1,19 +1,22 @@
 <!doctype html><html lang="en-CA"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex"><title>AppLovin Accelerator Cohort Funnel</title>
+<meta name="robots" content="noindex"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&display=swap" rel="stylesheet"><title>AppLovin Accelerator Cohort Funnel</title>
 <style>
-:root{--bg:#fff;--el:#fff;--t1:#111827;--t2:#4B5563;--t3:#9CA3AF;--bd:#D1D5DB}
-@media(prefers-color-scheme:dark){:root{--bg:#0B0B0C;--el:#1A1A1D;--t1:#F3F4F6;--t2:#B4B8C0;--t3:#6B7280;--bd:#3A3A40}}
-body{margin:0;background:var(--bg);color:var(--t1);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.5}
+@font-face{font-family:"Owners Wide";src:url(assets/OwnersWide-Bold.otf) format("opentype");font-weight:700;font-display:swap}
+:root{--bg:#F4F3EE;--el:#FBFBF8;--t1:#0A0A0A;--t2:#54544E;--t3:#54544E;--bd:#D9D8D1;--lime:#C8FF19}
+body{margin:0;background:var(--bg);color:#1C1C1A;font-family:Geist,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.45}
 main{max-width:1200px;margin:0 auto;padding:32px 20px 60px}
-h1{font-size:28px;margin:0 0 4px}.sum{color:var(--t2);margin:0 0 28px}
-h2{font-size:18px;margin:32px 0 10px}p{margin:0 0 10px}
+.logo{height:40px;display:block;margin:0 0 28px}
+h1,h2{font-family:"Owners Wide",Geist,Arial,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:-.01em;color:var(--t1);line-height:1.05}
+h1{font-size:30px;margin:0 0 8px}.sum{color:var(--t2);margin:0 0 28px}
+h2{font-size:18px;margin:36px 0 12px;padding-top:12px;border-top:3px solid var(--lime);display:inline-block}p{margin:0 0 10px}
 svg{width:100%;height:auto;display:block}g.n{cursor:pointer}
-#pop{position:fixed;top:16px;left:50%;transform:translateX(-50%);width:min(440px,calc(100vw - 32px));max-height:70vh;overflow-y:auto;border:1px solid var(--bd);border-radius:16px;padding:20px;background:var(--el);box-shadow:0 12px 40px rgba(0,0,0,.25);display:none;z-index:10;box-sizing:border-box}
+#pop{position:fixed;top:16px;left:50%;transform:translateX(-50%);width:min(440px,calc(100vw - 32px));max-height:70vh;overflow-y:auto;border:1px solid var(--bd);border-top:4px solid var(--lime);border-radius:16px;padding:20px;background:var(--el);color:#1C1C1A;box-shadow:0 12px 40px rgba(0,0,0,.18);display:none;z-index:10;box-sizing:border-box}
 #pop.on{display:block}.hd{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
-.kd{display:flex;align-items:center;gap:8px;color:var(--t3);font-size:13px}.sw{width:12px;height:12px}
-button{font:inherit;font-size:14px;padding:6px 14px;border-radius:999px;border:1px solid var(--bd);background:transparent;color:var(--t1);cursor:pointer}
-.tl{font-size:20px;font-weight:600;margin-bottom:4px}.st{color:var(--t2);font-size:14px;margin-bottom:12px}ul{margin:0;padding-left:20px}li{margin-bottom:4px}
+.kd{display:flex;align-items:center;gap:8px;color:var(--t2);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.12em}.sw{width:12px;height:12px;box-sizing:border-box;border:1px solid #0A0A0A}
+button{font:inherit;font-size:14px;font-weight:600;padding:6px 14px;border-radius:999px;border:1px solid #0A0A0A;background:var(--lime);color:#0A0A0A;cursor:pointer}
+.tl{font-family:"Owners Wide",Geist,Arial,sans-serif;font-size:20px;font-weight:700;color:var(--t1);margin-bottom:4px}.st{color:var(--t2);font-size:14px;margin-bottom:12px}ul{margin:0;padding-left:20px}li{margin-bottom:4px}li::marker{color:#0A0A0A}
 </style></head><body><main>
+<img class="logo" src="assets/tierra_logo_black.png" alt="Tierra">
 <h1>AppLovin Accelerator Cohort Funnel</h1><p class="sum">Click any box to see what it does.</p>
 <h2>The funnel</h2><div id="chart"></div>
 <h2>One list, two segments</h2>
@@ -27,9 +30,9 @@ button{font:inherit;font-size:14px;padding:6px 14px;border-radius:999px;border:1
 </main>
 <div id="pop" role="dialog"><div class="hd"><div class="kd"><span class="sw" id="sw"></span><span id="kn"></span></div><button id="cl">Close</button></div><div class="tl" id="tl"></div><div class="st" id="st"></div><ul id="ds"></ul></div>
 <script>
-const ORANGE = "#E8772E";
-const BLUE = "#2B6CB0";
-const DARK = "#1F2937";
+const ORANGE = "#0A0A0A";
+const BLUE = "#C8FF19";
+const DARK = "#FFFFFF";
 const W = 210;
 const H = 54;
 
@@ -136,10 +139,11 @@ function render(){
  let o='<svg viewBox="0 0 1130 1600"><defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--t3)"/></marker></defs>';
  edges.forEach(e=>{const lp=labelPos(e);o+='<path d="'+path(e)+'" fill="none" stroke="var(--t3)" stroke-width="1.5"'+(e.dashed?' stroke-dasharray="6 5"':'')+' marker-end="url(#ar)"/>';if(e.label)o+='<text x="'+lp[0]+'" y="'+lp[1]+'" text-anchor="middle" font-size="13" font-weight="600" fill="var(--t2)">'+e.label+'</text>';});
  nodes.forEach(n=>{const on=n.id===sel,rx=n.kind==="decision"?H/2:n.kind==="exit"?6:10;
-  o+='<g class="n" data-node="'+n.id+'"><rect x="'+(n.x-W/2)+'" y="'+(n.y-H/2)+'" width="'+W+'" height="'+H+'" rx="'+rx+'" fill="'+fillFor(n.kind)+'"'+(on?' stroke="var(--t1)" stroke-width="3"':'')+'/>';
-  o+='<text x="'+n.x+'" y="'+(n.sub?n.y-3:n.y+5)+'" text-anchor="middle" font-size="15" font-weight="600" fill="#fff">'+esc(n.label)+'</text>';
-  if(n.sub)o+='<text x="'+n.x+'" y="'+(n.y+15)+'" text-anchor="middle" font-size="11.5" fill="#fff" opacity="0.9">'+esc(n.sub)+'</text>';o+='</g>';});
+  o+='<g class="n" data-node="'+n.id+'"><rect x="'+(n.x-W/2)+'" y="'+(n.y-H/2)+'" width="'+W+'" height="'+H+'" rx="'+rx+'" fill="'+fillFor(n.kind)+'"'+(on?' stroke="'+(n.kind==="decision"?"#0A0A0A":"#C8FF19")+'" stroke-width="4" style="paint-order:stroke"':(n.kind!=="step"?' stroke="#0A0A0A" stroke-width="1.2"':''))+'/>';const tc=n.kind==="step"?"#FFFFFF":"#0A0A0A";
+  o+='<text x="'+n.x+'" y="'+(n.sub?n.y-3:n.y+5)+'" text-anchor="middle" font-size="15" font-weight="600" fill="'+tc+'">'+esc(n.label)+'</text>';
+  if(n.sub)o+='<text x="'+n.x+'" y="'+(n.y+15)+'" text-anchor="middle" font-size="11.5" fill="'+tc+'" opacity="0.85">'+esc(n.sub)+'</text>';o+='</g>';});
  document.getElementById('chart').innerHTML=o+'</svg>';
+ document.querySelectorAll('#chart g.n text').forEach(t=>{if(t.getComputedTextLength()>W-20)t.setAttribute('textLength',W-20),t.setAttribute('lengthAdjust','spacingAndGlyphs');});
  const p=document.getElementById('pop');
  if(!sel){p.classList.remove('on');return;}
  const s=byId[sel];p.classList.add('on');
@@ -152,5 +156,5 @@ document.addEventListener('click',e=>{const g=e.target.closest&&e.target.closest
 document.addEventListener('mousedown',e=>{if(sel&&!(e.target.closest('#pop')||e.target.closest('[data-node]'))){sel=null;render();}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&sel){sel=null;render();}});
 document.getElementById('cl').onclick=()=>{sel=null;render();};
-render();
+render();if(document.fonts)document.fonts.ready.then(render);
 </script></body></html>
