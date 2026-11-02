@@ -1,0 +1,156 @@
+<!doctype html><html lang="en-CA"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><title>AppLovin Accelerator Cohort Funnel</title>
+<style>
+:root{--bg:#fff;--el:#fff;--t1:#111827;--t2:#4B5563;--t3:#9CA3AF;--bd:#D1D5DB}
+@media(prefers-color-scheme:dark){:root{--bg:#0B0B0C;--el:#1A1A1D;--t1:#F3F4F6;--t2:#B4B8C0;--t3:#6B7280;--bd:#3A3A40}}
+body{margin:0;background:var(--bg);color:var(--t1);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.5}
+main{max-width:1200px;margin:0 auto;padding:32px 20px 60px}
+h1{font-size:28px;margin:0 0 4px}.sum{color:var(--t2);margin:0 0 28px}
+h2{font-size:18px;margin:32px 0 10px}p{margin:0 0 10px}
+svg{width:100%;height:auto;display:block}g.n{cursor:pointer}
+#pop{position:fixed;top:16px;left:50%;transform:translateX(-50%);width:min(440px,calc(100vw - 32px));max-height:70vh;overflow-y:auto;border:1px solid var(--bd);border-radius:16px;padding:20px;background:var(--el);box-shadow:0 12px 40px rgba(0,0,0,.25);display:none;z-index:10;box-sizing:border-box}
+#pop.on{display:block}.hd{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.kd{display:flex;align-items:center;gap:8px;color:var(--t3);font-size:13px}.sw{width:12px;height:12px}
+button{font:inherit;font-size:14px;padding:6px 14px;border-radius:999px;border:1px solid var(--bd);background:transparent;color:var(--t1);cursor:pointer}
+.tl{font-size:20px;font-weight:600;margin-bottom:4px}.st{color:var(--t2);font-size:14px;margin-bottom:12px}ul{margin:0;padding-left:20px}li{margin-bottom:4px}
+</style></head><body><main>
+<h1>AppLovin Accelerator Cohort Funnel</h1><p class="sum">Click any box to see what it does.</p>
+<h2>The funnel</h2><div id="chart"></div>
+<h2>One list, two segments</h2>
+<p>One Kajabi list, two segments by tag. One weekly teaching email from Alex goes to both; the CTA differs by tag.</p>
+<p>Segment 1, never registered (most of the current list of about 1,158): CTA save my seat for the next webinar.</p>
+<p>Segment 2, been through a webinar (attended or registered but didn't buy, plus waitlist): CTA apply first, save my seat as backup. Waitlist gets first access when the next cohort opens.</p>
+<p>Everyone starts in segment 1 and moves to segment 2 once they've been through a webinar.</p>
+<h2>Key links</h2>
+<p>Registration: learn.tierraagency.com. Application: learn.tierraagency.com/apply. Dashed lines are loops. Next webinar: Thursday, Nov 5, 10 AM PT.</p>
+<p>Alain D'Aoust</p>
+</main>
+<div id="pop" role="dialog"><div class="hd"><div class="kd"><span class="sw" id="sw"></span><span id="kn"></span></div><button id="cl">Close</button></div><div class="tl" id="tl"></div><div class="st" id="st"></div><ul id="ds"></ul></div>
+<script>
+const ORANGE = "#E8772E";
+const BLUE = "#2B6CB0";
+const DARK = "#1F2937";
+const W = 210;
+const H = 54;
+
+const nodes = [
+  { id: "outreach", label: "Outreach", kind: "step", x: 170, y: 50, desc: ["Emails to the existing list who haven't registered (segment 1: never registered)", "DMs from Alex", "CTA: register (save my seat)", "Next: registration page, learn.tierraagency.com"] },
+  { id: "content", label: "Content", sub: "Alex's organic posts", kind: "step", x: 420, y: 50, desc: ["Alex's regular AppLovin posts: top of the funnel", "For anyone following Alex", "CTA: register for the webinar", "The funnel never sends people back here"] },
+  { id: "clips", label: "Clips", sub: "from each webinar", kind: "step", x: 670, y: 50, desc: ["Short highlights cut from each webinar", "Feed Alex's posts", "Also used as thumbnails in replay emails"] },
+  { id: "hv", label: "High value?", sub: "flagged at registration", kind: "decision", x: 1000, y: 50, desc: ["Team checks each new registrant: top prospect?", "Flagged once, at registration", "Flagged people stay in the normal funnel", "Next: personal message from Alex after the webinar"] },
+  { id: "personal", label: "Personal outreach", sub: "CTA: skip the application", kind: "step", x: 1000, y: 150, desc: ["Alex messages each flagged prospect by hand, after the webinar", "Team preps the list and drafts (about 20 minutes for Alex)", "Message matches what they did: attended or missed it", "CTA: skip the application, talk directly"] },
+  { id: "reg", label: "Webinar registration", sub: "learn.tierraagency.com", kind: "step", x: 300, y: 150, desc: ["Registration page: learn.tierraagency.com", "The one top-of-funnel link", "Next: reminder emails to attend"] },
+  { id: "eattend", label: "Emails", sub: "CTA: attend", kind: "step", x: 300, y: 250, desc: ["Reminders in Alex's name, before the webinar", "For everyone registered", "CTA: attend live"] },
+  { id: "webinar", label: "Webinar", sub: "CTA: apply", kind: "step", x: 300, y: 350, desc: ["Live session: same webinar about every 3 weeks (cadence to confirm)", "Next: Thursday, Nov 5, 10 AM PT", "Goal: applications", "CTA: apply at learn.tierraagency.com/apply"] },
+  { id: "attend", label: "Did attend?", kind: "decision", x: 300, y: 450, desc: ["Splits registrants: came live or didn't", "Each group gets its own replay email", "Both CTAs: apply"] },
+  { id: "r1", label: "Replay email #1", sub: "CTA: apply", kind: "step", x: 160, y: 550, desc: ["For attendees", "Thanks them and links the replay", "CTA: apply at learn.tierraagency.com/apply"] },
+  { id: "r2", label: "Replay email #2", sub: "CTA: apply", kind: "step", x: 440, y: 550, desc: ["For registrants who missed it", "Clip thumbnail opens the replay page (emails can't play video)", "CTA: apply (button under the video)", "Replay is up for a limited time"] },
+  { id: "applied", label: "Did apply?", kind: "decision", x: 300, y: 650, desc: ["The key check: applying, not watching the replay", "Application form tags each applicant", "No tag: keeps getting apply emails"] },
+  { id: "eapply", label: "Emails", sub: "CTA: apply", kind: "step", x: 130, y: 760, desc: ["Short sequence for anyone who hasn't applied", "Answers time, price, 'is this for me?'; shares proof", "Ends on a real deadline", "CTA: apply"] },
+  { id: "exit1", label: "Exit criteria", sub: "deadline passes, no application", kind: "exit", x: 130, y: 860, desc: ["Ends at the application deadline", "No application: apply emails stop", "Next: invite to the next session"] },
+  { id: "invite", label: "Invite to next session", sub: "CTA: save my seat", kind: "step", x: 130, y: 960, desc: ["Invite to the next webinar", "CTA: save my seat (one click re-registers)", "Next: attend emails again, never back to the top of the funnel"] },
+  { id: "qual", label: "Qualified?", kind: "decision", x: 560, y: 760, desc: ["Each application reviewed for cohort fit", "Yes: offer", "No: better-fit option"] },
+  { id: "down", label: "Downsell funnel", sub: "TBD", kind: "step", x: 420, y: 860, desc: ["For applicants not ready for the cohort", "Smaller, lower-priced option", "To be decided"] },
+  { id: "offer", label: "Offer + pay link", kind: "step", x: 720, y: 860, desc: ["For qualified applicants", "Cohort offer with a pay link", "CTA: pay to lock in a seat"] },
+  { id: "paid1", label: "Paid?", kind: "decision", x: 720, y: 960, desc: ["Did they pay?", "Yes: onboarding", "No: reminders"] },
+  { id: "onboard", label: "Onboarding sequence", kind: "step", x: 1000, y: 1060, desc: ["Welcome emails for new cohort members", "What to expect, start date, how to prepare", "The goal of the whole funnel"] },
+  { id: "remind", label: "Reminder sequence", sub: "CTA: pay", kind: "step", x: 720, y: 1060, desc: ["For people who got the offer but didn't pay", "Restates the offer and deadline", "CTA: pay"] },
+  { id: "exit2", label: "Exit criteria", sub: "reminders done, not paid", kind: "exit", x: 720, y: 1160, desc: ["Reminders done, still not paid: emails stop", "They're qualified and warm", "Next: personal outreach"] },
+  { id: "outpay", label: "Outreach", sub: "CTA: pay", kind: "step", x: 720, y: 1260, desc: ["Call or message from Alex", "Asks what's holding them back: price, timing, payment plan", "CTA: pay"] },
+  { id: "paid2", label: "Paid?", kind: "decision", x: 720, y: 1360, desc: ["Paid after Alex's outreach?", "Yes: onboarding", "No: waitlist"] },
+  { id: "wait", label: "Waitlist", sub: "first access, next cohort", kind: "step", x: 720, y: 1460, desc: ["For people who want in, but not now", "First access to the next cohort", "Next: nurture list"] },
+  { id: "nurture", label: "Nurture (warm segment)", sub: "same list, segment 2", kind: "step", x: 720, y: 1560, desc: ["Same Kajabi list, segment 2 (tag): been through a webinar", "Attended or registered but didn't buy, plus waitlist", "Weekly teaching email from Alex; CTA: apply first, save my seat as backup", "Waitlist gets first access when the next cohort opens"] },
+];
+
+const edges = [
+  { from: "outreach", to: "reg" },
+  { from: "content", to: "reg" },
+  { from: "clips", to: "content" },
+  { from: "hv", to: "personal" },
+  { from: "reg", to: "hv", dashed: true, via: [[1000, 150]] },
+  { from: "reg", to: "eattend" },
+  { from: "eattend", to: "webinar" },
+  { from: "webinar", to: "clips", dashed: true, via: [[670, 350]] },
+  { from: "webinar", to: "attend" },
+  { from: "attend", to: "r1", label: "Yes" },
+  { from: "attend", to: "r2", label: "No" },
+  { from: "r1", to: "applied" },
+  { from: "r2", to: "applied" },
+  { from: "applied", to: "eapply", label: "No" },
+  { from: "applied", to: "qual", label: "Yes" },
+  { from: "eapply", to: "exit1" },
+  { from: "exit1", to: "invite" },
+  { from: "invite", to: "eattend", dashed: true, via: [[20, 960], [20, 250]] },
+  { from: "qual", to: "down", label: "No" },
+  { from: "qual", to: "offer", label: "Yes" },
+  { from: "offer", to: "paid1" },
+  { from: "paid1", to: "onboard", label: "Yes", via: [[1000, 960]] },
+  { from: "paid1", to: "remind", label: "No" },
+  { from: "remind", to: "exit2" },
+  { from: "exit2", to: "outpay" },
+  { from: "outpay", to: "paid2" },
+  { from: "paid2", to: "onboard", label: "Yes", via: [[1000, 1360]] },
+  { from: "paid2", to: "wait", label: "No" },
+  { from: "wait", to: "nurture" },
+  { from: "nurture", to: "invite", dashed: true, via: [[130, 1560]] },
+];
+
+const byId = {};
+nodes.forEach((n) => { byId[n.id] = n; });
+
+function path(e) {
+  const a = byId[e.from];
+  const b = byId[e.to];
+  const pts = [];
+  if (e.via && e.via.length) {
+    const v0 = e.via[0];
+    const start = v0[1] === a.y ? [a.x + (v0[0] > a.x ? W / 2 : -W / 2), a.y] : [a.x, a.y + (v0[1] > a.y ? H / 2 : -H / 2)];
+    pts.push(start);
+    e.via.forEach((p) => pts.push(p));
+    const last = e.via[e.via.length - 1];
+    const end = last[1] === b.y ? [b.x + (last[0] > b.x ? W / 2 : -W / 2), b.y] : [b.x, b.y + (last[1] > b.y ? H / 2 : -H / 2)];
+    pts.push(end);
+  } else if (a.y === b.y) {
+    pts.push([a.x + (b.x > a.x ? W / 2 : -W / 2), a.y], [b.x + (b.x > a.x ? -W / 2 : W / 2), b.y]);
+  } else {
+    const y1 = a.y + H / 2;
+    const y2 = b.y - H / 2;
+    const m = (y1 + y2) / 2;
+    pts.push([a.x, y1], [a.x, m], [b.x, m], [b.x, y2]);
+  }
+  return pts.map((p, i) => (i ? "L" : "M") + p[0] + " " + p[1]).join(" ");
+}
+
+function labelPos(e) {
+  const a = byId[e.from];
+  const b = byId[e.to];
+  if (e.via) return [(a.x + e.via[0][0]) / 2, a.y - 8];
+  const m = (a.y + H / 2 + b.y - H / 2) / 2;
+  return [(a.x + b.x) / 2, m - 6];
+}
+const kindName={step:"Step",decision:"Decision",exit:"Exit criteria"};
+const fillFor=k=>k==="step"?ORANGE:k==="decision"?BLUE:DARK;
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/'/g,"&#39;");
+let sel=null;
+function render(){
+ let o='<svg viewBox="0 0 1130 1600"><defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--t3)"/></marker></defs>';
+ edges.forEach(e=>{const lp=labelPos(e);o+='<path d="'+path(e)+'" fill="none" stroke="var(--t3)" stroke-width="1.5"'+(e.dashed?' stroke-dasharray="6 5"':'')+' marker-end="url(#ar)"/>';if(e.label)o+='<text x="'+lp[0]+'" y="'+lp[1]+'" text-anchor="middle" font-size="13" font-weight="600" fill="var(--t2)">'+e.label+'</text>';});
+ nodes.forEach(n=>{const on=n.id===sel,rx=n.kind==="decision"?H/2:n.kind==="exit"?6:10;
+  o+='<g class="n" data-node="'+n.id+'"><rect x="'+(n.x-W/2)+'" y="'+(n.y-H/2)+'" width="'+W+'" height="'+H+'" rx="'+rx+'" fill="'+fillFor(n.kind)+'"'+(on?' stroke="var(--t1)" stroke-width="3"':'')+'/>';
+  o+='<text x="'+n.x+'" y="'+(n.sub?n.y-3:n.y+5)+'" text-anchor="middle" font-size="15" font-weight="600" fill="#fff">'+esc(n.label)+'</text>';
+  if(n.sub)o+='<text x="'+n.x+'" y="'+(n.y+15)+'" text-anchor="middle" font-size="11.5" fill="#fff" opacity="0.9">'+esc(n.sub)+'</text>';o+='</g>';});
+ document.getElementById('chart').innerHTML=o+'</svg>';
+ const p=document.getElementById('pop');
+ if(!sel){p.classList.remove('on');return;}
+ const s=byId[sel];p.classList.add('on');
+ const sw=document.getElementById('sw');sw.style.background=fillFor(s.kind);sw.style.borderRadius=s.kind==="decision"?"6px":"3px";
+ document.getElementById('kn').textContent=kindName[s.kind];document.getElementById('tl').textContent=s.label;
+ const st=document.getElementById('st');st.textContent=s.sub||'';st.style.display=s.sub?'':'none';
+ document.getElementById('ds').innerHTML=s.desc.map(d=>'<li>'+esc(d)+'</li>').join('');
+}
+document.addEventListener('click',e=>{const g=e.target.closest&&e.target.closest('[data-node]');if(g){sel=g.dataset.node;render();}});
+document.addEventListener('mousedown',e=>{if(sel&&!(e.target.closest('#pop')||e.target.closest('[data-node]'))){sel=null;render();}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&sel){sel=null;render();}});
+document.getElementById('cl').onclick=()=>{sel=null;render();};
+render();
+</script></body></html>
