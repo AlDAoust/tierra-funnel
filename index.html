@@ -53,7 +53,7 @@ const W = 210;
 const H = 54;
 
 const nodes = [
-  { id: "outreach", label: "Outreach", kind: "step", x: 170, y: 50, desc: ["Emails to the existing list who haven't registered (segment 1: never registered)", "DMs from Alex", "CTA: register (save my seat)", "Next: registration page, learn.tierraagency.com", "Goes to: Segment 1 (bf-invite-oct29, not registered)", "Segment 1 gets the invite emails for the next webinar (CTA: save my seat)", "Carries a swappable tier line (e.g. 'Founding: X of 10 left'), so copy isn't rewritten when a tier fills"] },
+  { id: "outreach", label: "Outreach", kind: "step", x: 170, y: 50, desc: ["Emails to the existing list who haven't registered (segment 1: never registered)", "DMs from Alex", "CTA: register (save my seat)", "Next: registration page, learn.tierraagency.com", "Goes to: Segment 1 (bf-invite-oct29, not registered)", "Segment 1 gets the invite emails for the next webinar (CTA: save my seat)", "Current invite sends (Nov 5 webinar):", "Send 3 (Tue Nov 3): From $0 to $20K a day on AppLovin in 10 days", "Send 4 (Wed Nov 4, 7 AM PT): Tomorrow: the AppLovin BFCM attack plan", "Thu Nov 5, 7 AM PT: Live in 3 hours reminder", "Carries a swappable tier line (e.g. 'Founding: X of 10 left'), so copy isn't rewritten when a tier fills"] },
   { id: "content", label: "Content", sub: "Alex's organic posts", kind: "step", x: 420, y: 50, desc: ["Alex's regular AppLovin posts: top of the funnel", "For anyone following Alex", "CTA: register for the webinar", "The funnel never sends people back here"] },
   { id: "clips", label: "Clips", sub: "from each webinar", kind: "step", x: 670, y: 50, desc: ["Short highlights cut from each webinar", "Feed Alex's posts", "Also used as thumbnails in replay emails"] },
   { id: "hv", label: "High value?", sub: "flagged at registration", kind: "decision", x: 1000, y: 50, desc: ["Team checks each new registrant: top prospect?", "Flagged once, at registration", "Flagged people stay in the normal funnel", "Next: personal message from Alex after the webinar"] },
@@ -61,15 +61,14 @@ const nodes = [
   { id: "best", label: "Best performer?", sub: "weekly, after Nov 5", kind: "decision", x: 670, y: 150, desc: ["Weekly boost loop: starts after the Nov 5 webinar", "Once a week, pick the single best-performing clip from that week", "Criteria TBD with Alex. Proposed signals: clicks to the registration page (matter most), and engagement rate compared with Alex's usual posts", "Yes: boost it (paid). No: keep posting organically"] },
   { id: "boost", label: "Boost (paid)", sub: "1 clip per week", kind: "step", x: 670, y: 250, desc: ["Starts after the Nov 5 webinar", "Paid boost of the week's best clip on LinkedIn", "Drives to webinar registration", "Weekly budget: TBD with Alex", "Thresholds: TBD with Alex"] },
   { id: "reg", label: "Webinar registration", sub: "learn.tierraagency.com", kind: "step", x: 300, y: 150, desc: ["Registration page: learn.tierraagency.com", "The one top-of-funnel link", "Next: reminder emails to attend", "On submit: moves to Segment 2 (bf-webinar-registrant added)"] },
-  { id: "eattend", label: "Confirmation + countdown", sub: "CTA: attend", kind: "step", x: 300, y: 250, desc: ["Confirmation (sent at registration, the Kajabi event's at-time-of-registration email; the form sends no separate one). Alex's voice. Subject: You're in. Thu Nov 5, 10 AM PT. No preview text. Body: Zoom link; six add-to-calendar links (Apple, Google, Office 365, Outlook, Outlook.com, Yahoo) for Nov 5, 10–11 AM PT; asks them to reply with the one thing they need to figure out about AppLovin before Black Friday; new-to-AppLovin line offering a white-glove referral + $5,000 ad credits for showing up; signed Alex; footer Sent by Tierra Agency (Carlsbad). No buttons.", "Countdown reminders (tight copy): 3 days out, 1 day out, 1 hour out. Kajabi's built-in 1-day and 1-hour event reminders are covered by this countdown, so don't double up.", "Goes to: registrants (bf-webinar-registrant)", "Carries a swappable tier line (e.g. 'Founding: X of 10 left'), so copy isn't rewritten when a tier fills"] },
+  { id: "eattend", label: "Confirmation + countdown", sub: "CTA: attend", kind: "step", x: 300, y: 250, desc: ["Confirmation (sent at registration, the Kajabi event's at-time-of-registration email; the form sends no separate one). Alex's voice. Session: Thu Nov 5, 10 AM PT / 1 PM ET. Subject: 'You're in. Thu Nov 5, 10 AM PT' (1 PM ET). No preview text. Body: Zoom link; six add-to-calendar links (Apple, Google, Office 365, Outlook, Outlook.com, Yahoo) for Nov 5, 10–11 AM PT (1–2 PM ET); asks them to reply with the one thing they need to figure out about AppLovin before Black Friday; new-to-AppLovin line offering a white-glove referral + $5,000 ad credits for showing up; signed Alex; footer Sent by Tierra Agency (Carlsbad). No buttons.", "Countdown reminders (tight copy): 3 days out, 1 day out, 1 hour out. Kajabi's built-in 1-day and 1-hour event reminders are covered by this countdown, so don't double up.", "Goes to: registrants (bf-webinar-registrant)", "Carries a swappable tier line (e.g. 'Founding: X of 10 left'), so copy isn't rewritten when a tier fills"] },
   { id: "webinar", label: "Webinar", sub: "CTA: apply", kind: "step", x: 300, y: 350, desc: ["Live session: same webinar about every 3 weeks (cadence to confirm)", "Next: Thursday, Nov 5, 10 AM PT", "Goal: applications", "CTA: apply at learn.tierraagency.com/apply"] },
   { id: "attend", label: "Did attend?", kind: "decision", x: 300, y: 450, desc: ["Splits registrants: came live or didn't", "Each group gets its own replay email", "Both CTAs: apply"] },
   { id: "r1", label: "Replay email #1", sub: "CTA: apply", kind: "step", x: 160, y: 550, desc: ["For attendees", "Thanks them and links the replay", "CTA: apply at learn.tierraagency.com/apply", "Goes to: attendees (attended tag TBD)", "Carries a swappable tier line (e.g. 'Founding: X of 10 left'), so copy isn't rewritten when a tier fills"] },
   { id: "r2", label: "Replay email #2", sub: "CTA: apply", kind: "step", x: 440, y: 550, desc: ["For registrants who missed it", "Clip thumbnail opens the replay page (emails can't play video)", "CTA: apply (button under the video)", "Replay is up for a limited time", "Goes to: no-shows (no-show tag TBD)", "Carries a swappable tier line (e.g. 'Founding: X of 10 left'), so copy isn't rewritten when a tier fills"] },
-  { id: "applied", label: "Did apply?", kind: "decision", x: 300, y: 650, desc: ["The key check: applying, not watching the replay", "Application form tags each applicant", "No tag: keeps getting apply emails"] },
-  { id: "eapply", label: "Emails", sub: "CTA: apply", kind: "step", x: 130, y: 760, desc: ["Short sequence for anyone who hasn't applied", "Answers time, price, 'is this for me?'; shares proof", "Ends on a real deadline", "CTA: apply", "Goes to: Segment 2 without founding-applicant", "Carries a swappable tier line (e.g. 'Founding: X of 10 left'), so copy isn't rewritten when a tier fills"] },
-  { id: "exit1", label: "Exit criteria", sub: "deadline passes, no application", kind: "exit", x: 130, y: 860, desc: ["Ends at the application deadline", "No application: apply emails stop", "Next: invite to the next session"] },
-  { id: "invite", label: "Application window (~3 weeks)", sub: "CTA: apply", kind: "step", x: 130, y: 960, desc: ["Runs from one webinar to the next (~3 weeks), for registrants who haven't applied.", "Week 1: replay + apply emails.", "Week 2: proof, objections answered, case study.", "Week 3: honest seat count + invite to the next webinar.", "Stops when they apply or pay. No fake deadlines.", "Carries a swappable tier line (e.g. 'Founding: X of 10 left'), so copy isn't rewritten when a tier fills"] },
+  { id: "applied", label: "Did apply?", kind: "decision", x: 300, y: 650, desc: ["The key check: applying, not watching the replay", "Application form tags each applicant", "No tag: stays in the application window"] },
+  { id: "exit1", label: "Exit criteria", sub: "window closes, no application", kind: "exit", x: 130, y: 860, desc: ["Ends when the application window closes at the next webinar", "No application: application window emails stop", "Next: next webinar invites"] },
+  { id: "invite", label: "Application window (~3 weeks)", sub: "CTA: apply", kind: "step", x: 130, y: 760, desc: ["Runs from one webinar to the next (~3 weeks), for registrants who haven't applied.", "Week 1: replay emails (attendees and no-shows) + apply emails.", "Week 2: proof, objections answered (time, price, is this for me?), case study.", "Week 3: honest seat count + invite to the next webinar.", "Ends when the window closes at the next webinar. Stops early if they apply or pay. No fake deadlines.", "Goes to: Segment 2 without founding-applicant", "Carries a swappable tier line (e.g. 'Founding: X of 10 left'), so copy isn't rewritten when a tier fills"] },
   { id: "qual", label: "Qualified?", kind: "decision", x: 560, y: 760, desc: ["Each application reviewed for cohort fit", "Yes: offer", "No: better-fit option"] },
   { id: "down", label: "Downsell funnel", sub: "TBD", kind: "step", x: 420, y: 860, desc: ["For applicants not ready for the cohort", "Smaller, lower-priced option", "To be decided"] },
   { id: "offer", label: "Offer + pay link", kind: "step", x: 720, y: 860, desc: ["For qualified applicants", "Cohort offer with a pay link", "CTA: pay to lock in a seat"] },
@@ -79,7 +78,7 @@ const nodes = [
   { id: "exit2", label: "Exit criteria", sub: "reminders done, not paid", kind: "exit", x: 720, y: 1160, desc: ["Reminders done, still not paid: emails stop", "They're qualified and warm", "Next: personal outreach"] },
   { id: "outpay", label: "Outreach", sub: "CTA: pay", kind: "step", x: 720, y: 1260, desc: ["Call or message from Alex", "Asks what's holding them back: price, timing, payment plan", "CTA: pay"] },
   { id: "paid2", label: "Paid?", kind: "decision", x: 720, y: 1360, desc: ["Paid after Alex's outreach?", "Yes: onboarding", "No: waitlist"] },
-  { id: "wait", label: "Waitlist", sub: "first access, next cohort", kind: "step", x: 720, y: 1460, desc: ["For people who want in, but not now", "First access to the next cohort", "Next: nurture list"] },
+  { id: "wait", label: "Waitlist", sub: "first access, next cohort", kind: "step", x: 720, y: 1460, desc: ["For people who want in, but not now", "First access to the next cohort", "Next: next cohort list"] },
   { id: "nurture", label: "Next cohort list", sub: "waitlist", kind: "step", x: 720, y: 1560, desc: ["Same Kajabi list, Segment 2: bf-webinar-registrant, founding-applicant or cohort-waitlist", "Gets the invite emails for the next webinar", "Waitlist gets first access when the next cohort opens", "Goes to: Segment 2"] },
 ];
 
@@ -101,11 +100,10 @@ const edges = [
   { from: "attend", to: "r2", label: "No" },
   { from: "r1", to: "applied" },
   { from: "r2", to: "applied" },
-  { from: "applied", to: "eapply", label: "No" },
+  { from: "applied", to: "invite", label: "No" },
   { from: "applied", to: "qual", label: "Yes" },
-  { from: "eapply", to: "exit1" },
-  { from: "exit1", to: "invite" },
-  { from: "invite", to: "eattend", dashed: true, via: [[20, 960], [20, 250]] },
+  { from: "invite", to: "exit1" },
+  { from: "exit1", to: "eattend", dashed: true, via: [[20, 860], [20, 250]] },
   { from: "qual", to: "down", label: "No" },
   { from: "qual", to: "offer", label: "Yes" },
   { from: "offer", to: "paid1" },
@@ -117,7 +115,7 @@ const edges = [
   { from: "paid2", to: "onboard", label: "Yes", via: [[1000, 1360]] },
   { from: "paid2", to: "wait", label: "No" },
   { from: "wait", to: "nurture" },
-  { from: "nurture", to: "invite", dashed: true, via: [[130, 1560]] },
+  { from: "nurture", to: "exit1", dashed: true, via: [[130, 1560]] },
 ];
 
 const byId = {};
