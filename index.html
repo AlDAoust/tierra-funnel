@@ -24,6 +24,11 @@ button{font:inherit;font-size:14px;font-weight:600;padding:6px 14px;border-radiu
 <p>Segment 1, never registered (most of the current list of about 1,158): CTA save my seat for the next webinar.</p>
 <p>Segment 2, been through a webinar (attended or registered but didn't buy, plus waitlist): CTA apply first, save my seat as backup. Waitlist gets first access when the next cohort opens.</p>
 <p>Everyone starts in segment 1 and moves to segment 2 once they've been through a webinar.</p>
+<h2>Weekly boost loop</h2>
+<p><strong>Starts after the Nov 5 webinar.</strong> Webinar → clips → LinkedIn content → best performer? Yes: boost (paid), which drives to webinar registration. No: keep posting organically.</p>
+<p>Rule: once a week, boost the single best-performing clip from that week.</p>
+<p>Criteria: TBD with Alex. Proposed starting signals: clicks to the registration page (these matter most), and engagement rate compared with Alex's usual posts.</p>
+<p>Weekly budget: TBD with Alex. Thresholds: TBD with Alex.</p>
 <h2>Key links</h2>
 <p>Registration: learn.tierraagency.com. Application: learn.tierraagency.com/apply. Dashed lines are loops. Next webinar: Thursday, Nov 5, 10 AM PT.</p>
 <p>Alain D'Aoust</p>
@@ -42,6 +47,8 @@ const nodes = [
   { id: "clips", label: "Clips", sub: "from each webinar", kind: "step", x: 670, y: 50, desc: ["Short highlights cut from each webinar", "Feed Alex's posts", "Also used as thumbnails in replay emails"] },
   { id: "hv", label: "High value?", sub: "flagged at registration", kind: "decision", x: 1000, y: 50, desc: ["Team checks each new registrant: top prospect?", "Flagged once, at registration", "Flagged people stay in the normal funnel", "Next: personal message from Alex after the webinar"] },
   { id: "personal", label: "Personal outreach", sub: "CTA: skip the application", kind: "step", x: 1000, y: 150, desc: ["Alex messages each flagged prospect by hand, after the webinar", "Team preps the list and drafts (about 20 minutes for Alex)", "Message matches what they did: attended or missed it", "CTA: skip the application, talk directly"] },
+  { id: "best", label: "Best performer?", sub: "weekly, after Nov 5", kind: "decision", x: 670, y: 150, desc: ["Weekly boost loop: starts after the Nov 5 webinar", "Once a week, pick the single best-performing clip from that week", "Criteria TBD with Alex. Proposed signals: clicks to the registration page (matter most), and engagement rate compared with Alex's usual posts", "Yes: boost it (paid). No: keep posting organically"] },
+  { id: "boost", label: "Boost (paid)", sub: "1 clip per week", kind: "step", x: 670, y: 250, desc: ["Starts after the Nov 5 webinar", "Paid boost of the week's best clip on LinkedIn", "Drives to webinar registration", "Weekly budget: TBD with Alex", "Thresholds: TBD with Alex"] },
   { id: "reg", label: "Webinar registration", sub: "learn.tierraagency.com", kind: "step", x: 300, y: 150, desc: ["Registration page: learn.tierraagency.com", "The one top-of-funnel link", "Next: reminder emails to attend"] },
   { id: "eattend", label: "Emails", sub: "CTA: attend", kind: "step", x: 300, y: 250, desc: ["Reminders in Alex's name, before the webinar", "For everyone registered", "CTA: attend live"] },
   { id: "webinar", label: "Webinar", sub: "CTA: apply", kind: "step", x: 300, y: 350, desc: ["Live session: same webinar about every 3 weeks (cadence to confirm)", "Next: Thursday, Nov 5, 10 AM PT", "Goal: applications", "CTA: apply at learn.tierraagency.com/apply"] },
@@ -73,7 +80,11 @@ const edges = [
   { from: "reg", to: "hv", dashed: true, via: [[1000, 150]] },
   { from: "reg", to: "eattend" },
   { from: "eattend", to: "webinar" },
-  { from: "webinar", to: "clips", dashed: true, via: [[670, 350]] },
+  { from: "webinar", to: "clips", dashed: true, via: [[830, 350], [830, 50]] },
+  { from: "content", to: "best" },
+  { from: "best", to: "boost", label: "Yes" },
+  { from: "best", to: "content", label: "No", dashed: true, via: [[480, 150]], tx: 480 },
+  { from: "boost", to: "reg", via: [[440, 250], [440, 150]] },
   { from: "webinar", to: "attend" },
   { from: "attend", to: "r1", label: "Yes" },
   { from: "attend", to: "r2", label: "No" },
@@ -111,7 +122,7 @@ function path(e) {
     pts.push(start);
     e.via.forEach((p) => pts.push(p));
     const last = e.via[e.via.length - 1];
-    const end = last[1] === b.y ? [b.x + (last[0] > b.x ? W / 2 : -W / 2), b.y] : [b.x, b.y + (last[1] > b.y ? H / 2 : -H / 2)];
+    const end = last[1] === b.y ? [b.x + (last[0] > b.x ? W / 2 : -W / 2), b.y] : [e.tx ?? b.x, b.y + (last[1] > b.y ? H / 2 : -H / 2)];
     pts.push(end);
   } else if (a.y === b.y) {
     pts.push([a.x + (b.x > a.x ? W / 2 : -W / 2), a.y], [b.x + (b.x > a.x ? -W / 2 : W / 2), b.y]);
