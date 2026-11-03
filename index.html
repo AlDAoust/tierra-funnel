@@ -87,13 +87,13 @@ const edges = [
   { from: "content", to: "reg" },
   { from: "clips", to: "content" },
   { from: "hv", to: "personal" },
-  { from: "reg", to: "hv", dashed: true, via: [[1000, 150]] },
+  { from: "reg", to: "hv", dashed: true, via: [[300, 205], [1120, 205], [1120, 50]] },
   { from: "reg", to: "eattend" },
   { from: "eattend", to: "webinar" },
   { from: "webinar", to: "clips", dashed: true, via: [[830, 350], [830, 50]] },
   { from: "content", to: "best" },
   { from: "best", to: "boost", label: "Yes" },
-  { from: "best", to: "content", label: "No", dashed: true, via: [[480, 150]], tx: 480 },
+  { from: "best", to: "content", label: "No", dashed: true, via: [[805, 150], [805, 10], [420, 10]], lp: [790, 143] },
   { from: "boost", to: "reg", via: [[440, 250], [440, 150]] },
   { from: "webinar", to: "attend" },
   { from: "attend", to: "r1", label: "Yes" },
@@ -147,6 +147,7 @@ function path(e) {
 function labelPos(e) {
   const a = byId[e.from];
   const b = byId[e.to];
+  if (e.lp) return e.lp;
   if (e.via) return [(a.x + e.via[0][0]) / 2, a.y - 8];
   const m = (a.y + H / 2 + b.y - H / 2) / 2;
   return [(a.x + b.x) / 2, m - 6];
