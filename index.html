@@ -20,9 +20,10 @@ button{font:inherit;font-size:14px;font-weight:600;padding:6px 14px;border-radiu
 <h1>AppLovin Accelerator Cohort Funnel</h1><p class="sum">Click any box to see what it does.</p>
 <h2>The funnel</h2><div id="chart"></div>
 <h2>One list, two segments</h2>
-<p>One Kajabi list, two segments by tag. One weekly teaching email from Alex goes to both; the CTA differs by tag.</p>
-<p>Segment 1, never registered (most of the current list of about 1,158): CTA save my seat for the next webinar.</p>
-<p>Segment 2, been through a webinar (attended or registered but didn't buy, plus waitlist): CTA apply first, save my seat as backup. Waitlist gets first access when the next cohort opens.</p>
+<p>One Kajabi list, two segments by tag. One weekly teaching email from Alex goes to both segments, with a different CTA by segment.</p>
+<p>Segment 1: has bf-invite-oct29 but not bf-webinar-registrant. CTA: save my seat for the next webinar.</p>
+<p>Segment 2: has bf-webinar-registrant, founding-applicant or cohort-waitlist. CTA: apply first, save my seat as backup. Waitlist gets first access when the next cohort opens.</p>
+<p>Attended, no-show and paid tags: to be added (TBD).</p>
 <p>Everyone starts in segment 1 and moves to segment 2 once they've been through a webinar.</p>
 <h2>Weekly boost loop</h2>
 <p><strong>Starts after the Nov 5 webinar.</strong> Webinar → clips → LinkedIn content → best performer? Yes: boost (paid), which drives to webinar registration. No: keep posting organically.</p>
@@ -42,34 +43,34 @@ const W = 210;
 const H = 54;
 
 const nodes = [
-  { id: "outreach", label: "Outreach", kind: "step", x: 170, y: 50, desc: ["Emails to the existing list who haven't registered (segment 1: never registered)", "DMs from Alex", "CTA: register (save my seat)", "Next: registration page, learn.tierraagency.com"] },
+  { id: "outreach", label: "Outreach", kind: "step", x: 170, y: 50, desc: ["Emails to the existing list who haven't registered (segment 1: never registered)", "DMs from Alex", "CTA: register (save my seat)", "Next: registration page, learn.tierraagency.com", "Goes to: Segment 1 (bf-invite-oct29, not registered)", "Segment 1 also gets the weekly teaching email (CTA: save my seat)"] },
   { id: "content", label: "Content", sub: "Alex's organic posts", kind: "step", x: 420, y: 50, desc: ["Alex's regular AppLovin posts: top of the funnel", "For anyone following Alex", "CTA: register for the webinar", "The funnel never sends people back here"] },
   { id: "clips", label: "Clips", sub: "from each webinar", kind: "step", x: 670, y: 50, desc: ["Short highlights cut from each webinar", "Feed Alex's posts", "Also used as thumbnails in replay emails"] },
   { id: "hv", label: "High value?", sub: "flagged at registration", kind: "decision", x: 1000, y: 50, desc: ["Team checks each new registrant: top prospect?", "Flagged once, at registration", "Flagged people stay in the normal funnel", "Next: personal message from Alex after the webinar"] },
   { id: "personal", label: "Personal outreach", sub: "CTA: skip the application", kind: "step", x: 1000, y: 150, desc: ["Alex messages each flagged prospect by hand, after the webinar", "Team preps the list and drafts (about 20 minutes for Alex)", "Message matches what they did: attended or missed it", "CTA: skip the application, talk directly"] },
   { id: "best", label: "Best performer?", sub: "weekly, after Nov 5", kind: "decision", x: 670, y: 150, desc: ["Weekly boost loop: starts after the Nov 5 webinar", "Once a week, pick the single best-performing clip from that week", "Criteria TBD with Alex. Proposed signals: clicks to the registration page (matter most), and engagement rate compared with Alex's usual posts", "Yes: boost it (paid). No: keep posting organically"] },
   { id: "boost", label: "Boost (paid)", sub: "1 clip per week", kind: "step", x: 670, y: 250, desc: ["Starts after the Nov 5 webinar", "Paid boost of the week's best clip on LinkedIn", "Drives to webinar registration", "Weekly budget: TBD with Alex", "Thresholds: TBD with Alex"] },
-  { id: "reg", label: "Webinar registration", sub: "learn.tierraagency.com", kind: "step", x: 300, y: 150, desc: ["Registration page: learn.tierraagency.com", "The one top-of-funnel link", "Next: reminder emails to attend"] },
-  { id: "eattend", label: "Emails", sub: "CTA: attend", kind: "step", x: 300, y: 250, desc: ["Reminders in Alex's name, before the webinar", "For everyone registered", "CTA: attend live"] },
+  { id: "reg", label: "Webinar registration", sub: "learn.tierraagency.com", kind: "step", x: 300, y: 150, desc: ["Registration page: learn.tierraagency.com", "The one top-of-funnel link", "Next: reminder emails to attend", "On submit: moves to Segment 2 (bf-webinar-registrant added)"] },
+  { id: "eattend", label: "Emails", sub: "CTA: attend", kind: "step", x: 300, y: 250, desc: ["Reminders in Alex's name, before the webinar", "For everyone registered", "CTA: attend live", "Goes to: registrants (bf-webinar-registrant)"] },
   { id: "webinar", label: "Webinar", sub: "CTA: apply", kind: "step", x: 300, y: 350, desc: ["Live session: same webinar about every 3 weeks (cadence to confirm)", "Next: Thursday, Nov 5, 10 AM PT", "Goal: applications", "CTA: apply at learn.tierraagency.com/apply"] },
   { id: "attend", label: "Did attend?", kind: "decision", x: 300, y: 450, desc: ["Splits registrants: came live or didn't", "Each group gets its own replay email", "Both CTAs: apply"] },
-  { id: "r1", label: "Replay email #1", sub: "CTA: apply", kind: "step", x: 160, y: 550, desc: ["For attendees", "Thanks them and links the replay", "CTA: apply at learn.tierraagency.com/apply"] },
-  { id: "r2", label: "Replay email #2", sub: "CTA: apply", kind: "step", x: 440, y: 550, desc: ["For registrants who missed it", "Clip thumbnail opens the replay page (emails can't play video)", "CTA: apply (button under the video)", "Replay is up for a limited time"] },
+  { id: "r1", label: "Replay email #1", sub: "CTA: apply", kind: "step", x: 160, y: 550, desc: ["For attendees", "Thanks them and links the replay", "CTA: apply at learn.tierraagency.com/apply", "Goes to: attendees (attended tag TBD)"] },
+  { id: "r2", label: "Replay email #2", sub: "CTA: apply", kind: "step", x: 440, y: 550, desc: ["For registrants who missed it", "Clip thumbnail opens the replay page (emails can't play video)", "CTA: apply (button under the video)", "Replay is up for a limited time", "Goes to: no-shows (no-show tag TBD)"] },
   { id: "applied", label: "Did apply?", kind: "decision", x: 300, y: 650, desc: ["The key check: applying, not watching the replay", "Application form tags each applicant", "No tag: keeps getting apply emails"] },
-  { id: "eapply", label: "Emails", sub: "CTA: apply", kind: "step", x: 130, y: 760, desc: ["Short sequence for anyone who hasn't applied", "Answers time, price, 'is this for me?'; shares proof", "Ends on a real deadline", "CTA: apply"] },
+  { id: "eapply", label: "Emails", sub: "CTA: apply", kind: "step", x: 130, y: 760, desc: ["Short sequence for anyone who hasn't applied", "Answers time, price, 'is this for me?'; shares proof", "Ends on a real deadline", "CTA: apply", "Goes to: Segment 2 without founding-applicant"] },
   { id: "exit1", label: "Exit criteria", sub: "deadline passes, no application", kind: "exit", x: 130, y: 860, desc: ["Ends at the application deadline", "No application: apply emails stop", "Next: invite to the next session"] },
   { id: "invite", label: "Invite to next session", sub: "CTA: save my seat", kind: "step", x: 130, y: 960, desc: ["Invite to the next webinar", "CTA: save my seat (one click re-registers)", "Next: attend emails again, never back to the top of the funnel"] },
   { id: "qual", label: "Qualified?", kind: "decision", x: 560, y: 760, desc: ["Each application reviewed for cohort fit", "Yes: offer", "No: better-fit option"] },
   { id: "down", label: "Downsell funnel", sub: "TBD", kind: "step", x: 420, y: 860, desc: ["For applicants not ready for the cohort", "Smaller, lower-priced option", "To be decided"] },
   { id: "offer", label: "Offer + pay link", kind: "step", x: 720, y: 860, desc: ["For qualified applicants", "Cohort offer with a pay link", "CTA: pay to lock in a seat"] },
   { id: "paid1", label: "Paid?", kind: "decision", x: 720, y: 960, desc: ["Did they pay?", "Yes: onboarding", "No: reminders"] },
-  { id: "onboard", label: "Onboarding sequence", kind: "step", x: 1000, y: 1060, desc: ["Welcome emails for new cohort members", "What to expect, start date, how to prepare", "The goal of the whole funnel"] },
-  { id: "remind", label: "Reminder sequence", sub: "CTA: pay", kind: "step", x: 720, y: 1060, desc: ["For people who got the offer but didn't pay", "Restates the offer and deadline", "CTA: pay"] },
+  { id: "onboard", label: "Onboarding sequence", kind: "step", x: 1000, y: 1060, desc: ["Welcome emails for new cohort members", "What to expect, start date, how to prepare", "The goal of the whole funnel", "Goes to: paid (tag TBD); leaves nurture once paid"] },
+  { id: "remind", label: "Reminder sequence", sub: "CTA: pay", kind: "step", x: 720, y: 1060, desc: ["For people who got the offer but didn't pay", "Restates the offer and deadline", "CTA: pay", "Goes to: applicants not paid (paid tag TBD)"] },
   { id: "exit2", label: "Exit criteria", sub: "reminders done, not paid", kind: "exit", x: 720, y: 1160, desc: ["Reminders done, still not paid: emails stop", "They're qualified and warm", "Next: personal outreach"] },
   { id: "outpay", label: "Outreach", sub: "CTA: pay", kind: "step", x: 720, y: 1260, desc: ["Call or message from Alex", "Asks what's holding them back: price, timing, payment plan", "CTA: pay"] },
   { id: "paid2", label: "Paid?", kind: "decision", x: 720, y: 1360, desc: ["Paid after Alex's outreach?", "Yes: onboarding", "No: waitlist"] },
   { id: "wait", label: "Waitlist", sub: "first access, next cohort", kind: "step", x: 720, y: 1460, desc: ["For people who want in, but not now", "First access to the next cohort", "Next: nurture list"] },
-  { id: "nurture", label: "Nurture (warm segment)", sub: "same list, segment 2", kind: "step", x: 720, y: 1560, desc: ["Same Kajabi list, segment 2 (tag): been through a webinar", "Attended or registered but didn't buy, plus waitlist", "Weekly teaching email from Alex; CTA: apply first, save my seat as backup", "Waitlist gets first access when the next cohort opens"] },
+  { id: "nurture", label: "Nurture (warm segment)", sub: "same list, segment 2", kind: "step", x: 720, y: 1560, desc: ["Same Kajabi list, Segment 2: bf-webinar-registrant, founding-applicant or cohort-waitlist", "Weekly teaching email from Alex to both segments; Segment 2 CTA: apply first, save my seat as backup", "Waitlist gets first access when the next cohort opens", "Goes to: Segment 2"] },
 ];
 
 const edges = [
