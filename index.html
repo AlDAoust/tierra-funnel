@@ -36,7 +36,7 @@ button{font:inherit;font-size:14px;font-weight:600;padding:6px 14px;border-radiu
 <p>Registered, applied or waitlist: has bf-webinar-registrant, founding-applicant or cohort-waitlist. Registrants who haven't applied get the application window (~3 weeks); it stops when they apply or pay. Waitlist gets first access when the next cohort opens.</p>
 <p>Attended, no-show and paid tags: to be added (TBD).</p>
 <h2>Weekly boost loop</h2>
-<p><strong>Starts after the Nov 5 webinar.</strong> Webinar → clips → LinkedIn content → best performer? Yes: boost (paid), which drives to webinar registration. No: keep posting organically.</p>
+<p><strong>Starts after the Nov 5 webinar.</strong> Webinar → clips → LinkedIn content → best performer? Yes: boost (paid), which drives to webinar registration.</p>
 <p>Rule: once a week, boost the single best-performing clip from that week.</p>
 <p>Criteria: TBD with Alex. Proposed starting signals: clicks to the registration page (these matter most), and engagement rate compared with Alex's usual posts.</p>
 <p>Weekly budget: TBD with Alex. Thresholds: TBD with Alex.</p>
@@ -58,7 +58,7 @@ const nodes = [
   { id: "clips", label: "Clips", sub: "from each webinar", kind: "step", x: 670, y: 50, desc: ["Short highlights cut from each webinar", "Feed Alex's posts", "Also used as thumbnails in replay emails"] },
   { id: "hv", label: "High value?", sub: "flagged at registration", kind: "decision", x: 1000, y: 50, desc: ["Team checks each new registrant: top prospect?", "Flagged once, at registration", "Flagged people stay in the normal funnel", "Next: personal message from Alex after the webinar"] },
   { id: "personal", label: "Personal outreach", sub: "CTA: skip the application", kind: "step", x: 1000, y: 150, desc: ["Alex messages each flagged prospect by hand, after the webinar", "Team preps the list and drafts (about 20 minutes for Alex)", "Message matches what they did: attended or missed it", "CTA: skip the application, talk directly"] },
-  { id: "best", label: "Best performer?", sub: "weekly, after Nov 5", kind: "decision", x: 670, y: 150, desc: ["Weekly boost loop: starts after the Nov 5 webinar", "Once a week, pick the single best-performing clip from that week", "Criteria TBD with Alex. Proposed signals: clicks to the registration page (matter most), and engagement rate compared with Alex's usual posts", "Yes: boost it (paid). No: keep posting organically"] },
+  { id: "best", label: "Best performer?", sub: "weekly, after Nov 5", kind: "decision", x: 670, y: 150, desc: ["Weekly boost loop: starts after the Nov 5 webinar", "Once a week, pick the single best-performing clip from that week", "Criteria TBD with Alex. Proposed signals: clicks to the registration page (matter most), and engagement rate compared with Alex's usual posts", "Yes: boost it (paid)"] },
   { id: "boost", label: "Boost (paid)", sub: "1 clip per week", kind: "step", x: 670, y: 250, desc: ["Starts after the Nov 5 webinar", "Paid boost of the week's best clip on LinkedIn", "Drives to webinar registration", "Weekly budget: TBD with Alex", "Thresholds: TBD with Alex"] },
   { id: "reg", label: "Webinar registration", sub: "learn.tierraagency.com", kind: "step", x: 300, y: 150, desc: ["Registration page: learn.tierraagency.com", "The one top-of-funnel link", "Next: reminder emails to attend", "On submit: moves to Segment 2 (bf-webinar-registrant added)"] },
   { id: "eattend", label: "Confirmation + countdown", sub: "CTA: attend", kind: "step", x: 300, y: 250, desc: ["Confirmation (sent at registration, the Kajabi event's at-time-of-registration email; the form sends no separate one). Alex's voice. Session: Thu Nov 5, 10 AM PT / 1 PM ET. Subject: 'You're in. Thu Nov 5, 10 AM PT' (1 PM ET). No preview text. Body: Zoom link; six add-to-calendar links (Apple, Google, Office 365, Outlook, Outlook.com, Yahoo) for Nov 5, 10–11 AM PT (1–2 PM ET); asks them to reply with the one thing they need to figure out about AppLovin before Black Friday; new-to-AppLovin line offering a white-glove referral + $5,000 ad credits for showing up; signed Alex; footer Sent by Tierra Agency (Carlsbad). No buttons.", "Countdown reminders (tight copy): 3 days out, 1 day out, 1 hour out. Kajabi's built-in 1-day and 1-hour event reminders are covered by this countdown, so don't double up.", "Goes to: registrants (bf-webinar-registrant)", "Carries a swappable tier line (e.g. 'Founding: X of 10 left'), so copy isn't rewritten when a tier fills"] },
@@ -93,7 +93,6 @@ const edges = [
   { from: "webinar", to: "clips", dashed: true, via: [[830, 350], [830, 50]] },
   { from: "content", to: "best" },
   { from: "best", to: "boost", label: "Yes" },
-  { from: "best", to: "content", label: "No", dashed: true, via: [[805, 150], [805, 10], [420, 10]], lp: [790, 143] },
   { from: "boost", to: "reg", via: [[440, 250], [440, 150]] },
   { from: "webinar", to: "attend" },
   { from: "attend", to: "r1", label: "Yes" },
@@ -147,7 +146,6 @@ function path(e) {
 function labelPos(e) {
   const a = byId[e.from];
   const b = byId[e.to];
-  if (e.lp) return e.lp;
   if (e.via) return [(a.x + e.via[0][0]) / 2, a.y - 8];
   const m = (a.y + H / 2 + b.y - H / 2) / 2;
   return [(a.x + b.x) / 2, m - 6];
